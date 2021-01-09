@@ -3,6 +3,7 @@ import { Panel, Button } from "rsuite";
 import { db } from "../../services/firebase";
 import Scoreboard from "./Scoreboard";
 import { useHistory } from "react-router-dom";
+import { InputPicker } from 'rsuite';
 
 export default function ResultScreen(props) {
   const history = useHistory();
@@ -72,10 +73,7 @@ export default function ResultScreen(props) {
               paddingLeft: "10px",
             }}
           >
-            <p>
-              <b>Total</b>
-            </p>
-            <Scoreboard results={finalResults} lobbyId={props.lobbyId} />
+            <Scoreboard results={finalResults} roundResults={roundsResults} lobbyId={props.lobbyId} />
           </div>
           <div
             style={{
