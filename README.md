@@ -1,11 +1,16 @@
 # Geo Locator
 
+![Header image of app](https://github.com/RasterCrow/Geo-Locator/tree/master/GithubAssets/image1.jpg)
+
 Geoguessr clone made with React and Firebase Real Time Database, Firebase Hosting and Google Maps API.
 
 # Info
+
 If you sometimes feel like playing Geoguessr with your friends, but don't want to pay the monthly fee, Geo Locator can help you.
 
-To use it you need to setup your own .env with the firebase config like so : 
+It's still WIP , still have some work to do on perfomance improvements ( especially to reduce map loads from the Google Maps API ), but it works and for my use it's ok as it is.
+
+To use it you need to setup your own .env with the firebase config like so :
 You should also implement better security rules for for accessing real time database and quotas for the api key.
 
 ```
@@ -21,6 +26,17 @@ REACT_APP_MEASUREMENT_ID= "YOUR-DATA"
 
 You can then deploy it somewhere ( I use Firebase Hosting ) and limit it to the your friends, so other people don't have access to it.
 
-# Licence
+You can also add your own locations by going to _src/providers/GameProvider.js_ and add your Latitude and Longitude to the LOCATIONS array at the end of the file.
+
+# Images
+
+![Lobby functionality menu](https://github.com/RasterCrow/Geo-Locator/tree/master/GithubAssets/image2.png)
+
+![Game interface](https://github.com/RasterCrow/Geo-Locator/tree/master/GithubAssets/image3.jpg)
+
+![Game Recap](https://github.com/RasterCrow/Geo-Locator/tree/master/GithubAssets/image4.png)
+
+# License
+
 This code was written entirely by me and other than the conecept, is completely unrelated to Geoguessr.
 You can do whatever you want with this code.

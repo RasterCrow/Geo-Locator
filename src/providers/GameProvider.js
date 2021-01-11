@@ -9,7 +9,6 @@ export const GameProvider = ({ children }) => {
   const [latGuessed, setLatGuessed] = useState(0);
 
   const setLocationGuessed = (lat, lon) => {
-
     setLonGuessed(lon);
     setLatGuessed(lat);
   };
