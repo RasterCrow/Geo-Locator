@@ -1,6 +1,6 @@
 # Geo Locator
 
-![Header image of app](https://github.com/RasterCrow/Geo-Locator/tree/master/GithubAssets/image1.jpg)
+![Header image of app](https://github.com/RasterCrow/Geo-Locator/blob/master/GithubAssets/image1.jpg?raw=true)
 
 Geoguessr clone made with React and Firebase Real Time Database, Firebase Hosting and Google Maps API.
 
@@ -30,11 +30,14 @@ You can also add your own locations by going to _src/providers/GameProvider.js_ 
 
 # Images
 
-![Lobby functionality menu](https://github.com/RasterCrow/Geo-Locator/tree/master/GithubAssets/image2.png)
+Lobby Menu 
+![Lobby functionality menu](https://github.com/RasterCrow/Geo-Locator/blob/master/GithubAssets/image2.png?raw=true)
 
-![Game interface](https://github.com/RasterCrow/Geo-Locator/tree/master/GithubAssets/image3.jpg)
+Game Interface
+![Game interface](https://github.com/RasterCrow/Geo-Locator/blob/master/GithubAssets/image3.jpg?raw=true)
 
-![Game Recap](https://github.com/RasterCrow/Geo-Locator/tree/master/GithubAssets/image4.png)
+Game Recap Menu
+![Game Recap](https://github.com/RasterCrow/Geo-Locator/blob/master/GithubAssets/image4.png?raw=true)
 
 # License
 
