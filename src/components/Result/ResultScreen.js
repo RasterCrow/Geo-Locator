@@ -3,7 +3,6 @@ import { Panel, Button } from "rsuite";
 import { db } from "../../services/firebase";
 import Scoreboard from "./Scoreboard";
 import { useHistory } from "react-router-dom";
-import { InputPicker } from 'rsuite';
 
 export default function ResultScreen(props) {
   const history = useHistory();
@@ -37,6 +36,9 @@ export default function ResultScreen(props) {
   }, []);
 
   const handleReturnToLobby = () => {
+    history.push(`/lobby/${props.lobbyId}`);
+  };
+  const handleReturnToHome = () => {
     window.location.reload();
     history.push(`/`);
   };
@@ -81,15 +83,25 @@ export default function ResultScreen(props) {
               display: "flex",
               justifyContent: "flex-end",
               paddingRight: "10px",
+              gap: "20px"
             }}
           >
             <Button
-              style={{ height: "50px", alignSelf: "center" }}
+              style={{ height: "35px", alignSelf: "center" }}
+              appearance="primary"
+              onClick={handleReturnToHome}
+            >
+              Return to Home
+            </Button>
+            {/*
+            <Button
+              style={{ height: "35px", alignSelf: "center" }}
               appearance="primary"
               onClick={handleReturnToLobby}
             >
-              Return Home
+              Return to Lobby
             </Button>
+            */}
           </div>
         </div>
       </Panel>

@@ -113,7 +113,7 @@ export default function GameLobby(props) {
           header="Lobby Setup"
           shaded
         >
-          <div style={{ marginBottom: "25px" }}>
+          <div style={{ minHeight: "200px", marginBottom: "25px", backgroundColor: "rgb(30, 32, 36)", borderRadius: "15px", padding: "10px" }}>
             {joinedUsers.length > 0 ? (
               joinedUsers.map((singleUser) => {
                 return <User key={singleUser.uid} user={singleUser} />;
@@ -135,6 +135,7 @@ export default function GameLobby(props) {
                 <div>
                   Rounds :{" "}
                   <InputNumber
+                    style={{ width: "80px", marginTop: "10px", marginBottom: "10px" }}
                     value={rounds}
                     onChange={(e) => handleRoundsChange(e)}
                     min={2}
@@ -143,6 +144,7 @@ export default function GameLobby(props) {
                   />
                 Time limit per round:{" "}
                   <InputNumber
+                    style={{ width: "80px", marginTop: "10px", marginBottom: "10px" }}
                     value={timeLimit}
                     onChange={(e) => handleTimeLimitChange(e)}
                     value={timeLimit / 60}
@@ -153,7 +155,7 @@ export default function GameLobby(props) {
                 minutes
               </div>
                 <Button
-                  style={{ height: "50px", alignSelf: "center" }}
+                  style={{ height: "40px", alignSelf: "center" }}
                   appearance="primary"
                   onClick={handleStartGame}
                 >
@@ -168,7 +170,7 @@ export default function GameLobby(props) {
                 Time limit per round: {timeLimit / 60} minutes
               </div>
                   <Button
-                    style={{ height: "50px" }}
+                    style={{ height: "40px" }}
                     disabled
                     appearance="primary"
                     onClick={handleStartGame}

@@ -1,7 +1,7 @@
 import React from "react";
 
 import ReactDependentScript from "react-dependent-script";
-
+import MapGuesserLeaflet from "./MapGuesserLeaflet";
 import MapGuesser from "./MapGuesser";
 import Map from "./Map";
 
@@ -27,6 +27,7 @@ export default function MapWrapper(props) {
                     right: "0",
                 }}
             >
+                {/*<MapGuesserLeaflet />*/}
                 <MapGuesser />
             </div>
         </ReactDependentScript>

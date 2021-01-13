@@ -25,8 +25,6 @@ export default function MapGuesser(props) {
       mapTypeControl: false,
       streetViewControl: false,
       clickableIcons: false,
-
-      fullscreenControl: false,
       mapTypeId: window.google.maps.MapTypeId.ROADMAP,
     };
 

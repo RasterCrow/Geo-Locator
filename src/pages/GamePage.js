@@ -27,7 +27,7 @@ function deg2rad(deg) {
 
 export default function GamePage(props) {
   const { currentUser } = useContext(AuthContext);
-  const { lonGuessed, latGuessed } = useContext(GameContext);
+  const { setLocationGuessed, lonGuessed, latGuessed } = useContext(GameContext);
 
   const history = useHistory();
   const lobbyID = props.match.params.uid;
@@ -96,12 +96,16 @@ export default function GamePage(props) {
         });
     }
   }, []);
-
   //countdown in game time
   useEffect(() => {
     // Code in here
     if (isGameStarted) {
-      setCurrentTime(currentTime - 1);
+      setCurrentTime(timeLimit - 1);
+    } else {
+      //if the game ended reset the data
+      setCurrentRound(currentRound + 1);
+      setLocationGuessed(0, 0);
+      setCurrentTime(timeLimit);
     }
   }, [isGameStarted]);
 
@@ -109,12 +113,12 @@ export default function GamePage(props) {
   useEffect(() => {
     if (isGameStarted) {
       setTimeout(() => {
+        // console.log('countdown currenttime : ' + currentTime);
         // Code in here
         if (currentTime == 1) {
           //handle end round
           handleEndRound();
-        } else if (currentTime == 0) {
-        } else {
+        } else if (currentTime != timeLimit) {
           setCurrentTime(currentTime - 1);
         }
       }, 1000);
@@ -122,15 +126,18 @@ export default function GamePage(props) {
   }, [currentTime]);
 
   const handleNextRound = () => {
-    setIsGameStarted(false);
-    //reset local data
-    setCurrentRound(currentRound + 1);
     setIsGameStarted(true);
-    setCurrentTime(timeLimit);
   };
+
+  function inRange(x, min, max) {
+    return (min <= x && x <= max);
+  }
 
   const handleEndRound = () => {
     setIsGameStarted(false);
+    // setCurrentRound(currentRound + 1);
+    // setLocationGuessed(0, 0);
+    // setCurrentTime(timeLimit);
     //calculate points
     getDistanceFromLatLonInKm(
       parseFloat(latGuessed),
@@ -143,6 +150,7 @@ export default function GamePage(props) {
         let points = 0;
         //TODO Implementare time influenza valore
         let timeToAnswer = timeLimit - currentTime;
+        /*
         if (distance <= 1) {
           points = 1000;
         } else if (distance <= 5 && distance > 1) {
@@ -158,6 +166,36 @@ export default function GamePage(props) {
         } else if (distance <= 7000 && distance > 2500) {
           points = 100;
         } else if (distance > 7000) {
+          points = 1;
+        }
+        */
+        if (inRange(distance, 1, 2)) {
+          points = 10000;
+        } else if (inRange(distance, 3, 10)) {
+          points = 7000;
+        } else if (inRange(distance, 11, 50)) {
+          points = 4000;
+        } else if (inRange(distance, 51, 200)) {
+          points = 3000;
+        } else if (inRange(distance, 201, 500)) {
+          points = 2000;
+        } else if (inRange(distance, 501, 800)) {
+          points = 1000;
+        } else if (inRange(distance, 801, 1300)) {
+          points = 500;
+        } else if (inRange(distance, 1301, 1600)) {
+          points = 400;
+        } else if (inRange(distance, 1601, 2300)) {
+          points = 300;
+        } else if (inRange(distance, 2301, 2800)) {
+          points = 200;
+        } else if (inRange(distance, 2801, 3200)) {
+          points = 100;
+        } else if (inRange(distance, 3200, 4500)) {
+          points = 50;
+        } else if (inRange(distance, 4501, 6000)) {
+          points = 25;
+        } else {
           points = 1;
         }
 
@@ -176,7 +214,6 @@ export default function GamePage(props) {
         //check if game is finished
         if (currentRound == rounds) {
           //game is finished, show result page.
-
           setIsGameFinished(true);
         }
       });
@@ -205,10 +242,11 @@ export default function GamePage(props) {
             </p>
           ) : (
               <p style={{ fontSize: "2rem", fontFamily: "Montserrat" }}>
-                Round {currentRound + 1} out of {rounds}.
+                Round {currentRound} out of {rounds}.
               </p>
             )}
           <Button onClick={handleNextRound}>Start Round</Button>
+
         </div>
       ) : (
           <>
@@ -226,9 +264,9 @@ export default function GamePage(props) {
                   borderRadius: "10px",
                   border: "1px solid black",
                   backgroundColor: "rgba(255,255,255,0.4)",
-
+                  width: "10%",
                   position: "absolute",
-                  top: "6%",
+                  top: "10%",
                   left: "1%",
                   zIndex: "2",
                   display: "flex",
