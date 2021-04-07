@@ -10,6 +10,7 @@ import {
   Modal,
   Notification,
 } from "rsuite";
+import { useHistory } from "react-router-dom";
 import { joinLobby, checkLobbyExist } from "../../providers/GameProvider";
 import { AuthContext } from "../../providers/Auth";
 
@@ -23,7 +24,6 @@ function uuidv4() {
 }
 
 function checkData(username, lobbyId) {
-
   if (username == undefined || username.length < 2 || username.length > 25) {
     Notification["warning"]({
       title: "Warning",
@@ -33,6 +33,7 @@ function checkData(username, lobbyId) {
   }
 
   if (lobbyId.length < 0 || lobbyId == undefined || lobbyId == "") {
+    console.log("error");
     Notification["warning"]({
       title: "Warning",
       description: "Insert a Lobby ID",
@@ -44,6 +45,8 @@ function checkData(username, lobbyId) {
 
 export default function JoinLobbyModal() {
   const { createUser } = useContext(AuthContext);
+  const history = useHistory();
+
   const [lobbyId, setLobbyId] = useState("");
   const [open, setOpen] = useState(false);
   const [username, setUsername] = useState("gando");
@@ -53,15 +56,18 @@ export default function JoinLobbyModal() {
   const handleJoinLobby = (evt) => {
     evt.preventDefault();
     //create user
-
+    console.log(lobbyId);
     if (checkData(username, lobbyId)) {
       //create random ID
       let ID = uuidv4();
       checkLobbyExist(lobbyId).then((res) => {
         if (res == 1) {
+          console.log("esiste");
           createUser(username, ID).then((user) => {
             //let user join lobby
-            joinLobby(user, lobbyId);
+            joinLobby(user, lobbyId).then((user) => {
+              history.push(`/lobby/${lobbyId}`);
+            });
           });
         } else if (res == 2) {
           Notification["error"]({
@@ -105,7 +111,7 @@ export default function JoinLobbyModal() {
                 type="text"
                 value={lobbyId}
                 min={5}
-                max={5}
+                max={25}
                 onChange={(e) => setLobbyId(e)}
               />
               <HelpBlock>Required</HelpBlock>

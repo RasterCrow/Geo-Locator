@@ -38,6 +38,7 @@ export function createLobby(user, rounds, timeLimit) {
       [user.uid]: {
         uid: user.uid,
         username: user.username,
+        inLobby: true,
       },
     },
   });
@@ -45,6 +46,7 @@ export function createLobby(user, rounds, timeLimit) {
   let lobbyId = newLobby.key;
   return Promise.resolve(lobbyId);
 }
+
 export function checkLobbyExist(lobbyId) {
   return db
     .ref(`/lobbies/${lobbyId}`)
@@ -65,6 +67,20 @@ export function checkLobbyExist(lobbyId) {
     });
 }
 
+export function setIsUserInLobby(lobbyId, user, value) {
+  let lobbyRef = db.ref(`/lobbies/${lobbyId}/players`);
+  if (lobbyRef) {
+    lobbyRef.update({
+      [user.uid]: {
+        inLobby: value,
+      },
+    });
+    return Promise.resolve(1);
+  } else {
+    return Promise.resolve(0);
+  }
+}
+
 export function joinLobby(user, lobbyId) {
   //join
   let lobbyRef = db.ref(`/lobbies/${lobbyId}/players`);
@@ -73,6 +89,7 @@ export function joinLobby(user, lobbyId) {
       [user.uid]: {
         uid: user.uid,
         username: user.username,
+        inLobby: true,
       },
     });
     return Promise.resolve(1);
@@ -108,12 +125,14 @@ export function deleteGame(lobbyID) {
 //creates a game session
 export function createGame(users, uid_host, lobbyID, rounds, timeLimit) {
   //create game data
+  // let gameId = '_' + Math.random().toString(36).substr(2, 9);
   let gameLoc = getRandomLocations(rounds);
   //set host and timeLimit
   db.ref(`games/${lobbyID}`).update({
     host: uid_host,
     timeLimit: timeLimit,
     maxRounds: rounds,
+    lobby: lobbyID
   });
   //add partecipants
   users.forEach((user) => {
@@ -145,6 +164,7 @@ export function createGame(users, uid_host, lobbyID, rounds, timeLimit) {
   //set start so people get redirected
   db.ref(`lobbies/${lobbyID}`).update({
     gameStarted: true,
+    gameID: lobbyID,
   });
 }
 
@@ -155,8 +175,8 @@ function getRandomLocations(n) {
     //get random location
     let location = LOCATIONS[Math.floor(Math.random() * LOCATIONS.length)];
     let data = {
-      lat: location.split(",")[0],
-      lon: location.split(",")[1],
+      lat: parseFloat(location.split(",")[0]),
+      lon: parseFloat(location.split(",")[1]),
     };
 
     loc.push(data);

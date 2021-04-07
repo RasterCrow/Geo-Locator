@@ -43,7 +43,6 @@ export default function GameLobby(props) {
               null: null,
             });
           } else {
-
             //if user disconnects, disconnect user
             var presenceRef = db.ref(`lobbies/${lobbyID}/players`);
             presenceRef.onDisconnect().update({
@@ -96,91 +95,107 @@ export default function GameLobby(props) {
   return !isAuth ? (
     <CreateUserModal lobbyId={lobbyID} />
   ) : (
-      <div
+    <div
+      style={{
+        display: "flex",
+        height: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Panel
         style={{
-          display: "flex",
-          height: "100%",
-          justifyContent: "center",
-          alignItems: "center",
+          minHeight: "300px",
+          width: "500px",
+          backgroundColor: "#2B2E33",
         }}
+        header="Lobby Setup"
+        shaded
       >
-        <Panel
+        <div
           style={{
-            minHeight: "300px",
-            width: "500px",
-            backgroundColor: "#2B2E33",
+            minHeight: "200px",
+            marginBottom: "25px",
+            backgroundColor: "rgb(30, 32, 36)",
+            borderRadius: "15px",
+            padding: "10px",
           }}
-          header="Lobby Setup"
-          shaded
         >
-          <div style={{ minHeight: "200px", marginBottom: "25px", backgroundColor: "rgb(30, 32, 36)", borderRadius: "15px", padding: "10px" }}>
-            {joinedUsers.length > 0 ? (
-              joinedUsers.map((singleUser) => {
-                return <User key={singleUser.uid} user={singleUser} />;
-              })
-            ) : (
-                <p>Loading...</p>
-              )}
-          </div>
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "space-between",
-              paddingRight: "20px",
-            }}
-          >
-            {isHost ? (
-              <>
-                <div>
-                  Rounds :{" "}
-                  <InputNumber
-                    style={{ width: "80px", marginTop: "10px", marginBottom: "10px" }}
-                    value={rounds}
-                    onChange={(e) => handleRoundsChange(e)}
-                    min={2}
-                    max={20}
-                    step={1}
-                  />
+          {joinedUsers.length > 0 ? (
+            joinedUsers.map((singleUser) => {
+              return <User key={singleUser.uid} user={singleUser} />;
+            })
+          ) : (
+            <p>Loading...</p>
+          )}
+        </div>
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-between",
+            paddingRight: "20px",
+          }}
+        >
+          {isHost ? (
+            <>
+              <div>
+                Rounds :{" "}
+                <InputNumber
+                  style={{
+                    width: "80px",
+                    marginTop: "10px",
+                    marginBottom: "10px",
+                  }}
+                  value={rounds}
+                  onChange={(e) => handleRoundsChange(e)}
+                  min={2}
+                  max={20}
+                  step={1}
+                />
                 Time limit per round:{" "}
-                  <InputNumber
-                    style={{ width: "80px", marginTop: "10px", marginBottom: "10px" }}
-                    value={timeLimit}
-                    onChange={(e) => handleTimeLimitChange(e)}
-                    value={timeLimit / 60}
-                    min={1}
-                    max={10}
-                    step={1}
-                  />
+                <InputNumber
+                  style={{
+                    width: "80px",
+                    marginTop: "10px",
+                    marginBottom: "10px",
+                  }}
+                  value={timeLimit}
+                  onChange={(e) => handleTimeLimitChange(e)}
+                  value={timeLimit / 60}
+                  min={1}
+                  max={10}
+                  step={1}
+                />
                 minutes
               </div>
-                <Button
-                  style={{ height: "40px", alignSelf: "center" }}
-                  appearance="primary"
-                  onClick={handleStartGame}
-                >
-                  Start Game
+              <Button
+                style={{ height: "40px", alignSelf: "center" }}
+                appearance="primary"
+                onClick={handleStartGame}
+              >
+                Start Game
               </Button>
-              </>
-            ) : (
-                <>
-                  <div>
-                    Rounds : {rounds}
-                    <br />
+            </>
+          ) : (
+            <>
+              <div>
+                Rounds : {rounds}
+                <br />
                 Time limit per round: {timeLimit / 60} minutes
               </div>
-                  <Button
-                    style={{ height: "40px" }}
-                    disabled
-                    appearance="primary"
-                    onClick={handleStartGame}
-                  >
-                    Start Game
+              <Button
+                style={{ height: "40px" }}
+                disabled
+                appearance="primary"
+                onClick={handleStartGame}
+              >
+                Start Game
               </Button>
-                </>
-              )}
-          </div>
-        </Panel>
-      </div>
-    );
+            </>
+          )}
+        </div>
+      </Panel>
+    </div>
+  );
 }

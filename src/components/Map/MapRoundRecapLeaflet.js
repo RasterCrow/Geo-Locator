@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup, Tooltip } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  useMap,
+  Tooltip,
+} from "react-leaflet";
 import L from "leaflet";
 
 const iconCorrect = new L.Icon({
@@ -27,9 +33,15 @@ const iconUserGuess = new L.Icon({
   className: "marker-icon2",
 });
 
+function ChangeView({ center, zoom }) {
+  const map = useMap();
+  map.setView(center, zoom);
+  return null;
+}
+
 const Markers = ({ data, allMarkers }) => {
-  console.log(allMarkers);
-  console.log(data);
+  // console.log(allMarkers);
+  // console.log(data);
 
   return (
     <>
@@ -59,25 +71,34 @@ const Markers = ({ data, allMarkers }) => {
 
 export default function MapRoundRecapLeaflet(props) {
   const [markers, setMarkers] = useState(null);
+  const [center, setCenter] = useState([0, 0]);
 
-  useEffect(() => {
-    //retrieve results from json
-    let results = [];
-    for (var x in props.data.results) {
-      let data = {
-        lat: props.data.results[x].lat,
-        lon: props.data.results[x].lon,
-        username: props.data.results[x].username,
-      };
-      results.push(data);
-    }
-    //set all current markers, so leter i can remove them
-    setMarkers(results);
-  }, [props.roundToView]);
+  // useEffect(() => {
+  //   console.log("roundtoview");
+  //   setCenter([props.data.lat, props.data.lon]);
+  //   //retrieve results from json
+  //   let results = [];
+  //   for (var x in props.data.results) {
+  //     if (props.data.results[x].finished == false) {
+  //     } else {
+  //       let data = {
+  //         lat: props.data.results[x].lat,
+  //         lon: props.data.results[x].lon,
+  //         username: props.data.results[x].username,
+  //       };
+  //       results.push(data);
+  //     }
+  //   }
+  //   //set all current markers, so leter i can remove them
+  //   setMarkers(results);
+  // }, [props.roundToView]);
 
   //when props change it means there's a new result, so reset all markers and set them again
   useEffect(() => {
+    //("effest results");
     let results = [];
+
+    setCenter([parseFloat(props.data.lat), parseFloat(props.data.lon)]);
     for (var x in props.data.results) {
       if (props.data.results[x].finished == false) {
       } else {
@@ -95,9 +116,11 @@ export default function MapRoundRecapLeaflet(props) {
   return (
     <MapContainer
       style={{ width: "100%", height: "100%" }}
-      center={[0, 0]}
-      zoom={1}
+      center={center}
+      zoom={3}
     >
+      <ChangeView center={center} zoom={1} />
+
       <Markers data={props.data} allMarkers={markers} />
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

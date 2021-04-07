@@ -4,7 +4,6 @@ import CreateLobbyModal from "../components/Lobby/CreateLobbyModal";
 
 import JoinLobbyModal from "../components/Lobby/JoinLobbyModal";
 
-
 export default function Home() {
   return (
     <div

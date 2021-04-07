@@ -20,7 +20,7 @@ function App() {
         ) : (
           <div style={{ display: "flex", flexDirection: "column" }}>
             <CustomNavbar />
-            <div style={{ height: "95vh" }}>
+            <div style={{ height: "94vh" }}>
               <Suspense
                 fallback={
                   <Loader

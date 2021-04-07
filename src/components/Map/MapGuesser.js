@@ -48,5 +48,10 @@ export default function MapGuesser(props) {
     });
   }, []);
 
-  return <div style={{ width: "100%", height: "100%" }} id="miniMap" />;
+  return (
+    <div
+      style={{ width: "100%", height: "100%", marginRight: "100px" }}
+      id="miniMap"
+    />
+  );
 }

@@ -22,6 +22,14 @@ export default function Map(props) {
             linksControl: false,
             showRoadLabels: false,
             fullscreenControl: false,
+            zoomControl: true,
+            zoomControlOptions: {
+              position: window.google.maps.ControlPosition.LEFT_BOTTOM,
+            },
+            panControl: true,
+            panControlOptions: {
+              position: window.google.maps.ControlPosition.LEFT_BOTTOM,
+            },
             pov: {
               heading: 270,
               zoom: 1,

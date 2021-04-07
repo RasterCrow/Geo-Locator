@@ -75,7 +75,11 @@ export default function ResultScreen(props) {
               paddingLeft: "10px",
             }}
           >
-            <Scoreboard results={finalResults} roundResults={roundsResults} lobbyId={props.lobbyId} />
+            <Scoreboard
+              results={finalResults}
+              roundResults={roundsResults}
+              lobbyId={props.lobbyId}
+            />
           </div>
           <div
             style={{
@@ -83,7 +87,7 @@ export default function ResultScreen(props) {
               display: "flex",
               justifyContent: "flex-end",
               paddingRight: "10px",
-              gap: "20px"
+              gap: "20px",
             }}
           >
             <Button
@@ -94,19 +98,19 @@ export default function ResultScreen(props) {
               Return to Home
             </Button>
             {/*
-            <Button
-              style={{ height: "35px", alignSelf: "center" }}
-              appearance="primary"
-              onClick={handleReturnToLobby}
-            >
-              Return to Lobby
-            </Button>
-            */}
+              <Button
+                style={{ height: "35px", alignSelf: "center" }}
+                appearance="primary"
+                onClick={handleReturnToLobby}
+              >
+                Return to Lobby
+              </Button>
+           */}
           </div>
         </div>
       </Panel>
     </div>
   ) : (
-      <p>Loading...</p>
-    );
+    <p>Loading...</p>
+  );
 }
