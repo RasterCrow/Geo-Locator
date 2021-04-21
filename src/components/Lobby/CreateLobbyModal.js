@@ -78,9 +78,11 @@ export default function CreateLobbyModal(props) {
       createUser(username, ID).then((user) => {
         //create lobby
         setCustomAPIKey(APIKey);
-        createLobby(user, parseInt(rounds), parseInt(timeLimit)).then((res) => {
-          history.push(`/lobby/${res}`);
-        });
+        createLobby(user, parseInt(rounds), parseInt(timeLimit), APIKey).then(
+          (res) => {
+            history.push(`/lobby/${res}`);
+          }
+        );
       });
     }
   };

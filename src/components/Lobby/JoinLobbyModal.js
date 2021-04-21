@@ -11,7 +11,12 @@ import {
   Notification,
 } from "rsuite";
 import { useHistory } from "react-router-dom";
-import { joinLobby, checkLobbyExist } from "../../providers/GameProvider";
+import {
+  joinLobby,
+  checkLobbyExist,
+  getLobbyAPIKey,
+  GameContext,
+} from "../../providers/GameProvider";
 import { AuthContext } from "../../providers/Auth";
 
 function uuidv4() {
@@ -45,6 +50,8 @@ function checkData(username, lobbyId) {
 
 export default function JoinLobbyModal() {
   const { createUser } = useContext(AuthContext);
+
+  const { setCustomAPIKey } = useContext(GameContext);
   const history = useHistory();
 
   const [lobbyId, setLobbyId] = useState("");
@@ -62,11 +69,13 @@ export default function JoinLobbyModal() {
       let ID = uuidv4();
       checkLobbyExist(lobbyId).then((res) => {
         if (res == 1) {
-          console.log("esiste");
-          createUser(username, ID).then((user) => {
-            //let user join lobby
-            joinLobby(user, lobbyId).then((user) => {
-              history.push(`/lobby/${lobbyId}`);
+          getLobbyAPIKey(lobbyId).then((res) => {
+            setCustomAPIKey(res);
+            createUser(username, ID).then((user) => {
+              //let user join lobby
+              joinLobby(user, lobbyId).then((user) => {
+                history.push(`/lobby/${lobbyId}`);
+              });
             });
           });
         } else if (res == 2) {

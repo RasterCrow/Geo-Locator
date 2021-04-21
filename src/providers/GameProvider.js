@@ -33,7 +33,7 @@ export const GameProvider = ({ children }) => {
   );
 };
 
-export function createLobby(user, rounds, timeLimit) {
+export function createLobby(user, rounds, timeLimit, APIKey) {
   //create
   let lobbyRef = db.ref("/lobbies/");
   var newLobby = lobbyRef.push({
@@ -41,6 +41,7 @@ export function createLobby(user, rounds, timeLimit) {
     host: user.uid,
     timeLimit: timeLimit,
     rounds: rounds,
+    lobbyKey: APIKey,
     players: {
       [user.uid]: {
         uid: user.uid,
@@ -52,6 +53,15 @@ export function createLobby(user, rounds, timeLimit) {
 
   let lobbyId = newLobby.key;
   return Promise.resolve(lobbyId);
+}
+
+export function getLobbyAPIKey(lobbyId) {
+  return db
+    .ref(`/lobbies/${lobbyId}`)
+    .once("value")
+    .then((snapshot) => {
+      return Promise.resolve(snapshot.val().lobbyKey);
+    });
 }
 
 export function checkLobbyExist(lobbyId) {
@@ -90,6 +100,7 @@ export function setIsUserInLobby(lobbyId, user, value) {
 
 export function joinLobby(user, lobbyId) {
   //join
+
   let lobbyRef = db.ref(`/lobbies/${lobbyId}/players`);
   if (lobbyRef) {
     lobbyRef.update({

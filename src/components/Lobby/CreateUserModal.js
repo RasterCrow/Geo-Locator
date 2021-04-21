@@ -58,7 +58,8 @@ export default function CreateUserModal(props) {
         } else if (res == 2) {
           Notification["error"]({
             title: "Warning",
-            description: "Game in progress, can't join now.You\'ll now be redirected.",
+            description:
+              "Game in progress, can't join now. You'll now be redirected.",
           });
           setTimeout(() => {
             history.push(`/`);
@@ -66,7 +67,7 @@ export default function CreateUserModal(props) {
         } else {
           Notification["error"]({
             title: "Error",
-            description: "Lobby doesn't exists. You\'ll now be redirected.",
+            description: "Lobby doesn't exists. You'll now be redirected.",
           });
           setTimeout(() => {
             history.push(`/`);
