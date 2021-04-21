@@ -1,16 +1,19 @@
-import React from "react";
+import { React, useEffect, useContext } from "react";
 
 import ReactDependentScript from "react-dependent-script";
 import MapGuesserLeaflet from "./MapGuesserLeaflet";
 import MapGuesser from "./MapGuesser";
 import Map from "./Map";
-
-const apiKey = process.env.REACT_APP_API_KEY;
+import { GameContext } from "../../providers/GameProvider";
 
 export default function MapWrapper(props) {
+  const { googleApiKey } = useContext(GameContext);
+  useEffect(() => {
+    console.log(googleApiKey);
+  }, []);
   return (
     <ReactDependentScript
-      scripts={[`https://maps.googleapis.com/maps/api/js?key=${apiKey}`]}
+      scripts={[`https://maps.googleapis.com/maps/api/js?key=${googleApiKey}`]}
     >
       <Map
         center={{ lat: parseFloat(props.lat), lng: parseFloat(props.lon) }}

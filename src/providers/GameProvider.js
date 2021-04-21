@@ -7,10 +7,15 @@ export const GameContext = createContext();
 export const GameProvider = ({ children }) => {
   const [lonGuessed, setLonGuessed] = useState(0);
   const [latGuessed, setLatGuessed] = useState(0);
+  const [googleApiKey, setGoogleApiKey] = useState(null);
 
   const setLocationGuessed = (lat, lon) => {
     setLonGuessed(lon);
     setLatGuessed(lat);
+  };
+
+  const setCustomAPIKey = (key) => {
+    setGoogleApiKey(key);
   };
 
   return (
@@ -18,7 +23,9 @@ export const GameProvider = ({ children }) => {
       value={{
         lonGuessed,
         latGuessed,
+        googleApiKey,
         setLocationGuessed,
+        setCustomAPIKey,
       }}
     >
       {children}
@@ -132,7 +139,7 @@ export function createGame(users, uid_host, lobbyID, rounds, timeLimit) {
     host: uid_host,
     timeLimit: timeLimit,
     maxRounds: rounds,
-    lobby: lobbyID
+    lobby: lobbyID,
   });
   //add partecipants
   users.forEach((user) => {

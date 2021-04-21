@@ -9,9 +9,13 @@ import {
   HelpBlock,
   Modal,
   Notification,
+  Whisper,
+  Tooltip,
+  IconButton,
+  Icon,
 } from "rsuite";
 import { useHistory } from "react-router-dom";
-import { createLobby } from "../../providers/GameProvider";
+import { createLobby, GameContext } from "../../providers/GameProvider";
 import { AuthContext } from "../../providers/Auth";
 
 function uuidv4() {
@@ -50,6 +54,7 @@ function checkData(username, timeLimit, rounds) {
 }
 
 export default function CreateLobbyModal(props) {
+  const { setCustomAPIKey } = useContext(GameContext);
   const { createUser } = useContext(AuthContext);
   const history = useHistory();
 
@@ -57,6 +62,7 @@ export default function CreateLobbyModal(props) {
   const [open, setOpen] = useState(false);
   const [rounds, setRounds] = useState(5);
   const [username, setUsername] = useState("gando");
+  const [APIKey, setAPIKey] = useState("");
 
   const handleOpen = (open) => {
     setOpen(open);
@@ -71,6 +77,7 @@ export default function CreateLobbyModal(props) {
     if (checkData(username, timeLimit / 60, rounds)) {
       createUser(username, ID).then((user) => {
         //create lobby
+        setCustomAPIKey(APIKey);
         createLobby(user, parseInt(rounds), parseInt(timeLimit)).then((res) => {
           history.push(`/lobby/${res}`);
         });
@@ -121,6 +128,33 @@ export default function CreateLobbyModal(props) {
                 min={1}
                 max={10}
                 step={1}
+              />
+              <HelpBlock>Required</HelpBlock>
+            </FormGroup>
+            <FormGroup>
+              <ControlLabel>
+                Google API KEY
+                <a
+                  style={{ marginLeft: "5px" }}
+                  target="_blank"
+                  rel="noreferrer"
+                  href="https://google.it"
+                >
+                  <IconButton
+                    onClick={() => {}}
+                    icon={<Icon icon="info" />}
+                    circle
+                    size="md"
+                  />
+                </a>
+              </ControlLabel>
+              <FormControl
+                name="API_KEY"
+                type="text"
+                value={APIKey}
+                min={30}
+                max={45}
+                onChange={(e) => setAPIKey(e)}
               />
               <HelpBlock>Required</HelpBlock>
             </FormGroup>
