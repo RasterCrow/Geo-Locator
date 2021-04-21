@@ -138,7 +138,7 @@ export default function CreateLobbyModal(props) {
                   style={{ marginLeft: "5px" }}
                   target="_blank"
                   rel="noreferrer"
-                  href="https://google.it"
+                  href="https://github.com/RasterCrow/Geo-Locator/wiki"
                 >
                   <IconButton
                     onClick={() => {}}
