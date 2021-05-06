@@ -27,7 +27,7 @@ function uuidv4() {
   );
 }
 
-function checkData(username, timeLimit, rounds) {
+function checkData(username, timeLimit, rounds, APIKey) {
   if (username == undefined || username.length < 2 || username.length > 25) {
     Notification["warning"]({
       title: "Warning",
@@ -50,6 +50,13 @@ function checkData(username, timeLimit, rounds) {
     });
     return false;
   }
+  if (APIKey == undefined || APIKey.length < 10) {
+    Notification["warning"]({
+      title: "Warning",
+      description: "You must insert a valid API Key.",
+    });
+    return false;
+  }
   return true;
 }
 
@@ -61,7 +68,7 @@ export default function CreateLobbyModal(props) {
   const [timeLimit, setTimeLimit] = useState(60);
   const [open, setOpen] = useState(false);
   const [rounds, setRounds] = useState(5);
-  const [username, setUsername] = useState("gando");
+  const [username, setUsername] = useState("");
   const [APIKey, setAPIKey] = useState("");
 
   const handleOpen = (open) => {
@@ -74,7 +81,7 @@ export default function CreateLobbyModal(props) {
     //create random ID
     let ID = uuidv4();
     //save user on context
-    if (checkData(username, timeLimit / 60, rounds)) {
+    if (checkData(username, timeLimit / 60, rounds, APIKey)) {
       createUser(username, ID).then((user) => {
         //create lobby
         setCustomAPIKey(APIKey);

@@ -26,6 +26,7 @@ export default function Home() {
           width: "100%",
           height: "300px",
           alignItems: "center",
+          justifyContent: "space-between",
         }}
       >
         <h1
@@ -33,7 +34,7 @@ export default function Home() {
             paddingLeft: "10%",
             fontFamily: "Montserrat",
             color: "#FDFDFD",
-            textShadow: "3px 3px 5px rgb(22, 82, 240)",
+            textShadow: "3px 2px 3px rgb(22, 82, 240)",
           }}
         >
           Geo Locator
@@ -42,6 +43,49 @@ export default function Home() {
       <div style={{ display: "flex", justifyContent: "center", gap: "50px" }}>
         <CreateLobbyModal />
         <JoinLobbyModal />
+      </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          margin: "auto",
+          marginTop: "5px",
+          alignItems: "center",
+          gap: "10px",
+          maxWidth: "60%",
+        }}
+      >
+        <h2
+          style={{
+            fontFamily: "Montserrat",
+            fontSize: "2em",
+          }}
+        >
+          Geo Locator is a free to play Geoguessr clone.
+        </h2>
+        <p
+          style={{
+            fontFamily: "Montserrat",
+            fontSize: "1.6em",
+          }}
+        >
+          Geo Locator is an open-source and free to play alternative to the game
+          Geoguessr. <br /> You can view the source code on the{" "}
+          <a
+            href="https://github.com/RasterCrow/Geo-Locator"
+            target="__noBlank"
+          >
+            Github page
+          </a>{" "}
+          or you can follow{" "}
+          <a
+            href="https://github.com/RasterCrow/Geo-Locator/wiki"
+            target="__noBlank"
+          >
+            this tutorial{" "}
+          </a>{" "}
+          on the wiki, for setting up a lobby and getting a Google API Key.
+        </p>
       </div>
     </div>
   );
