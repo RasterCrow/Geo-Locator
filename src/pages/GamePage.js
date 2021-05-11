@@ -67,15 +67,7 @@ export default function GamePage(props) {
               setIsPartecipant(true);
               //retrieve game data
               let data = snapshot.val();
-              //setto onDisconnect magari non serve
-              if (data.host == currentUser.uid) {
-                //console.log("user is host");
-                //if host disconnects, remove lobby completely
-                var presenceRefHost = db.ref(`games/${lobbyID}`);
-                presenceRefHost.onDisconnect().set({
-                  null: null,
-                });
-              }
+
               setTimeLimit(data.timeLimit);
               setRounds(data.maxRounds);
               //retrieve rounds info
@@ -91,8 +83,7 @@ export default function GamePage(props) {
             } else {
               Notification["error"]({
                 title: "Error",
-                description:
-                  "Host closed the match. You'll now be redirected...",
+                description: "You can't join this match.",
               });
               setTimeout(() => {
                 history.push(`/`);

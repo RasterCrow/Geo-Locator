@@ -46,6 +46,7 @@ function GameMapPreview({ gameMapId }) {
 export default function GameLobby(props) {
   const [joinedUsers, setJoinedUsers] = useState([]);
   const [isHost, setIsHost] = useState(false);
+  const [hostId, setHostId] = useState(null);
   const [isAuth, setIsAuth] = useState(false);
   const [rounds, setRounds] = useState(null);
   const [gameMapId, setGameMapId] = useState(null);
@@ -61,7 +62,6 @@ export default function GameLobby(props) {
       setIsAuth(false);
     } else {
       //TODO check for password
-
       //when connected
       setIsAuth(true);
       //keep track of connected users and different data
@@ -70,20 +70,57 @@ export default function GameLobby(props) {
         if (snapshot.exists()) {
           const data = snapshot.val();
           //setto host e onDisconnect
+
+          setHostId(data.host);
           if (data.host == currentUser.uid) {
             setIsHost(true);
             //console.log("user is host");
-            //if host disconnects, remove lobby completely
-            var presenceRefHost = db.ref(`lobbies/${lobbyID}`);
-            presenceRefHost.onDisconnect().set({
-              null: null,
-            });
+            //if host disconnects, find another host if there are players.
+            if (Object.keys(data.players).length > 1) {
+              db.ref(`lobbies/${lobbyID}`).onDisconnect().cancel();
+              db.ref(`games/${lobbyID}`).onDisconnect().cancel();
+
+              let newHost = Object.keys(data.players).find(
+                (element) => element != data.host
+              );
+              db.ref(`lobbies/${lobbyID}`).onDisconnect().update({
+                host: newHost,
+              });
+
+              db.ref(`lobbies/${lobbyID}/players`)
+                .onDisconnect()
+                .update({
+                  [currentUser.uid]: null,
+                });
+
+              db.ref(`games/${lobbyID}`)
+                .once("value")
+                .then((snapshot) => {
+                  if (snapshot.exists()) {
+                    db.ref(`games/${lobbyID}`).onDisconnect().update({
+                      host: newHost,
+                    });
+                  }
+                });
+            } else {
+              db.ref(`lobbies/${lobbyID}`).onDisconnect().cancel();
+              db.ref(`games/${lobbyID}`).onDisconnect().cancel();
+
+              db.ref(`lobbies/${lobbyID}`).onDisconnect().set({
+                null: null,
+              });
+
+              db.ref(`games/${lobbyID}`).onDisconnect().set({
+                null: null,
+              });
+            }
           } else {
             //if user disconnects, disconnect user
-            var presenceRef = db.ref(`lobbies/${lobbyID}/players`);
-            presenceRef.onDisconnect().update({
-              [currentUser.uid]: null,
-            });
+            db.ref(`lobbies/${lobbyID}/players`)
+              .onDisconnect()
+              .update({
+                [currentUser.uid]: null,
+              });
           }
 
           //setto lista utentiJoinati
@@ -177,7 +214,13 @@ export default function GameLobby(props) {
           >
             {joinedUsers.length > 0 ? (
               joinedUsers.map((singleUser) => {
-                return <User key={singleUser.uid} user={singleUser} />;
+                return (
+                  <User
+                    key={singleUser.uid}
+                    user={singleUser}
+                    hostId={hostId}
+                  />
+                );
               })
             ) : (
               <p>Loading...</p>

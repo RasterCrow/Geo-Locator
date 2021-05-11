@@ -1,17 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Panel, Button } from "rsuite";
 import { db } from "../../services/firebase";
 import Scoreboard from "./Scoreboard";
 import { useHistory } from "react-router-dom";
+import { AuthContext } from "../../providers/Auth";
 
 export default function ResultScreen(props) {
   const history = useHistory();
   const [roundsResults, setRoundsResults] = useState([]);
   const [finalResults, setFinalResults] = useState([]);
+  const [hostUid, setHostUid] = useState(null);
+  const { currentUser } = useContext(AuthContext);
+
   useEffect(() => {
     //retrieve data
     db.ref(`games/${props.lobbyId}`).on("value", (snapshot) => {
       if (snapshot.exists()) {
+        let data = snapshot.val();
+        //
+        //sicne all the host can make plaeyrs return to lobby, this is a little trick to redirect everyone when host presses button
+        if (data.redirect) {
+          history.push(`/lobby/${props.lobbyId}`);
+        }
+        setHostUid(data.host);
         //retrieve other data
         let arrayDataRounds = [];
         let arrayFinalResults = {};
@@ -29,6 +40,19 @@ export default function ResultScreen(props) {
         });
         let result = [];
         for (var i in arrayFinalResults) result.push([i, arrayFinalResults[i]]);
+
+        if (data.host == currentUser.uid) {
+          if (
+            result.find((elem) => elem[1] == undefined || isNaN(elem[1])) ==
+            undefined
+          ) {
+            //set lobby gameStarted to false
+
+            db.ref(`lobbies/${props.lobbyId}`).update({
+              gameStarted: false,
+            });
+          }
+        }
         setRoundsResults(arrayDataRounds);
         setFinalResults(result);
       }
@@ -36,14 +60,17 @@ export default function ResultScreen(props) {
   }, []);
 
   const handleReturnToLobby = () => {
-    history.push(`/lobby/${props.lobbyId}`);
+    db.ref(`games/${props.lobbyId}`).update({
+      redirect: true,
+    });
   };
+
   const handleReturnToHome = () => {
     window.location.reload();
     history.push(`/`);
   };
 
-  return roundsResults.length > 0 || finalResults.length > 0 ? (
+  return roundsResults.length > 0 && finalResults.length > 0 ? (
     <div
       style={{
         display: "flex",
@@ -90,13 +117,36 @@ export default function ResultScreen(props) {
               gap: "20px",
             }}
           >
-            <Button
-              style={{ height: "35px", alignSelf: "center" }}
-              appearance="primary"
-              onClick={handleReturnToHome}
-            >
-              Return to Home
-            </Button>
+            {finalResults.find(
+              (elem) => elem[1] == undefined || isNaN(elem[1])
+            ) == undefined ? (
+              currentUser.uid == hostUid ? (
+                <Button
+                  style={{ height: "35px", alignSelf: "center" }}
+                  appearance="primary"
+                  onClick={handleReturnToLobby}
+                >
+                  Return to Lobby
+                </Button>
+              ) : (
+                <Button
+                  style={{ height: "35px", alignSelf: "center" }}
+                  appearance="primary"
+                  disabled
+                >
+                  Return to Lobby
+                </Button>
+              )
+            ) : (
+              <Button
+                style={{ height: "35px", alignSelf: "center" }}
+                appearance="primary"
+                disabled
+              >
+                Return to Lobby
+              </Button>
+            )}
+
             {/*
               <Button
                 style={{ height: "35px", alignSelf: "center" }}

@@ -159,6 +159,7 @@ export function createGame(
     timeLimit: timeLimit,
     maxRounds: rounds,
     lobby: lobbyID,
+    redirect: false,
   });
   //add partecipants
   users.forEach((user) => {
@@ -167,6 +168,9 @@ export function createGame(
     });
   });
   //create rounds
+  db.ref(`games/${lobbyID}/rounds`).set({
+    null: null,
+  });
   for (let index = 0; index < rounds; index++) {
     let resultsTemplate = {};
     users.forEach((user) => {
@@ -203,7 +207,6 @@ function getRandomLocations(nRounds, gameMapId) {
     //if game map is all the world, select randmoly from all the locations.
     if (gameMapId == "01") {
       let randomId = Math.floor(Math.random() * Object.keys(locations).length);
-      console.log(randomId);
       location =
         locations[Object.keys(locations)[randomId]][
           Math.floor(
