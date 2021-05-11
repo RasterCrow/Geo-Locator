@@ -1,32 +1,44 @@
 {
+    "07": {
+        "id": "07",
+        "image": "https://images.pexels.com/photos/808910/pexels-photo-808910.jpeg?auto=compress&cs=tinysrgb&h=100&w=300",
+        "title": "Old GeoLocator Maps",
+        "available": true
+    },
     "01": {
         "id": "01",
         "image": "https://www.worldexcellence.com/wp-content/uploads/2019/06/world-excellence-le-fonti.jpg",
-        "title": "All locations"
+        "title": "All locations",
+        "available": false
     },
     "02": {
         "id": "02",
         "image": "https://images.pexels.com/photos/2676642/pexels-photo-2676642.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=100&w=300",
-        "title": "Italy"
+        "title": "Italy",
+        "available": true
     },
     "03": {
         "id": "03",
         "image": "https://images.pexels.com/photos/2235302/pexels-photo-2235302.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=100&w=300",
-        "title": "Japan"
+        "title": "Japan",
+        "available": false
     },
     "04": {
         "id": "04",
         "image": "https://images.pexels.com/photos/37646/new-york-skyline-new-york-city-city-37646.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=100&w=300",
-        "title": "USA"
+        "title": "USA",
+        "available": false
     },
     "05": {
         "id": "05",
         "image": "https://images.pexels.com/photos/113885/pexels-photo-113885.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=100&w=300",
-        "title": "Europe"
+        "title": "Europe",
+        "available": false
     },
     "06": {
         "id": "06",
         "image": "https://cdn.pixabay.com/photo/2014/11/13/23/34/palace-530055_1280.jpg",
-        "title": "Famous Places"
+        "title": "Famous Places",
+        "available": false
     }
 }

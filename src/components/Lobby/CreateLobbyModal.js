@@ -73,7 +73,7 @@ export default function CreateLobbyModal(props) {
   const [APIKey, setAPIKey] = useState(
     "AIzaSyCCDLxCalH5m6iRxdyz9QyN1cRiGhUJ-K4"
   );
-  const [gameMap, setGameMap] = useState("01");
+  const [gameMap, setGameMap] = useState("07");
 
   const handleOpen = (open) => {
     setOpen(open);
@@ -207,6 +207,7 @@ export default function CreateLobbyModal(props) {
                     return (
                       <GameModeMap
                         selected={gameMap}
+                        available={gamemode.available}
                         title={gamemode.title}
                         image={gamemode.image}
                         id={gamemode.id}

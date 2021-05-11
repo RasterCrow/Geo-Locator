@@ -39,6 +39,7 @@ export default function GameMapSelectorModal(props) {
                       selected={mapSelectedId}
                       title={gamemode.title}
                       image={gamemode.image}
+                      available={gamemode.available}
                       id={gamemode.id}
                       key={gamemode.id}
                       selectGameMode={setMapSelectedId}
