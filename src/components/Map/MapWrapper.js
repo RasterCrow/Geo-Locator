@@ -8,9 +8,7 @@ import { GameContext } from "../../providers/GameProvider";
 
 export default function MapWrapper(props) {
   const { googleApiKey } = useContext(GameContext);
-  useEffect(() => {
-    console.log(googleApiKey);
-  }, []);
+
   return (
     <ReactDependentScript
       scripts={[`https://maps.googleapis.com/maps/api/js?key=${googleApiKey}`]}
@@ -27,8 +25,8 @@ export default function MapWrapper(props) {
           width: "400px",
           height: "300px",
           position: "absolute",
-          bottom: "0",
-          right: "0",
+          bottom: "15px",
+          right: "15px",
         }}
       >
         {/*

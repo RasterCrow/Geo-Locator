@@ -24,7 +24,7 @@ export default function Home() {
           backgroundPosition: "center",
           backgroundSize: "cover",
           width: "100%",
-          height: "300px",
+          minHeight: "300px",
           alignItems: "center",
           justifyContent: "space-between",
         }}
@@ -52,7 +52,8 @@ export default function Home() {
           marginTop: "5px",
           alignItems: "center",
           gap: "10px",
-          maxWidth: "60%",
+          width: "80%",
+          maxWidth: "1000px",
         }}
       >
         <h2
@@ -66,25 +67,51 @@ export default function Home() {
         <p
           style={{
             fontFamily: "Montserrat",
-            fontSize: "1.6em",
+            fontSize: "1.4em",
           }}
         >
           Geo Locator is an open-source and free to play alternative to the game
-          Geoguessr. <br /> You can view the source code on the{" "}
-          <a
-            href="https://github.com/RasterCrow/Geo-Locator"
-            target="__noBlank"
-          >
-            Github page
-          </a>{" "}
-          or you can follow{" "}
+          Geoguessr.
+          <br />
+          To play you need a Google api key, which you can either create by
+          yourself following{" "}
           <a
             href="https://github.com/RasterCrow/Geo-Locator/wiki"
             target="__noBlank"
           >
             this tutorial{" "}
           </a>{" "}
-          on the wiki, for setting up a lobby and getting a Google API Key.
+          or you can use the one I provide, which has daily limits on the number
+          of games you can play.
+          <br /> You can view the source code on the{" "}
+          <a
+            href="https://github.com/RasterCrow/Geo-Locator"
+            target="__noBlank"
+          >
+            Github page
+          </a>
+          , and if you want you can buy me a{" "}
+          <a href="https://www.buymeacoffee.com/rastercrow" target="__noBlank">
+            slice of pizza 🍕
+          </a>{" "}
+          to support the website.
+        </p>
+      </div>
+      <div>
+        <hr style={{ width: "70%", color: "white" }} />
+        <p
+          style={{
+            textAlign: "center",
+            fontSize: "1.3em",
+            marginBottom: "10px",
+            marginTop: "5px",
+          }}
+        >
+          Made with 💖 by{" "}
+          <a href="https://rastercrow.me/" target="__noBlank">
+            {" "}
+            RasterCrow{" "}
+          </a>
         </p>
       </div>
     </div>

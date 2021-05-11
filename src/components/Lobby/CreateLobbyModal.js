@@ -9,15 +9,15 @@ import {
   HelpBlock,
   Modal,
   Notification,
-  Whisper,
-  Tooltip,
   IconButton,
   Icon,
+  ButtonGroup,
 } from "rsuite";
 import { useHistory } from "react-router-dom";
 import { createLobby, GameContext } from "../../providers/GameProvider";
 import { AuthContext } from "../../providers/Auth";
-
+import gamemodes from "../../utilities/gamemods.json";
+import GameModeMap from "./GameModeMap";
 function uuidv4() {
   return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
     (
@@ -27,7 +27,7 @@ function uuidv4() {
   );
 }
 
-function checkData(username, timeLimit, rounds, APIKey) {
+function checkData(username, timeLimit, rounds, APIKey, gameMap) {
   if (username == undefined || username.length < 2 || username.length > 25) {
     Notification["warning"]({
       title: "Warning",
@@ -43,13 +43,14 @@ function checkData(username, timeLimit, rounds, APIKey) {
     });
     return false;
   }
-  if (timeLimit < 1 || timeLimit == undefined || timeLimit > 60) {
+  if (timeLimit < 1 || timeLimit == undefined || timeLimit > 20) {
     Notification["warning"]({
       title: "Warning",
-      description: "Time limit must be between 1 and 60 minutes.",
+      description: "Time limit must be between 1 and 20 minutes.",
     });
     return false;
   }
+  //check if api key was inserted
   if (APIKey == undefined || APIKey.length < 10) {
     Notification["warning"]({
       title: "Warning",
@@ -69,10 +70,17 @@ export default function CreateLobbyModal(props) {
   const [open, setOpen] = useState(false);
   const [rounds, setRounds] = useState(5);
   const [username, setUsername] = useState("");
-  const [APIKey, setAPIKey] = useState("");
+  const [APIKey, setAPIKey] = useState(
+    "AIzaSyCCDLxCalH5m6iRxdyz9QyN1cRiGhUJ-K4"
+  );
+  const [gameMap, setGameMap] = useState("01");
 
   const handleOpen = (open) => {
     setOpen(open);
+  };
+
+  const selectGameMode = (id) => {
+    setGameMap(id);
   };
 
   const handleCreateLobby = (evt) => {
@@ -81,92 +89,135 @@ export default function CreateLobbyModal(props) {
     //create random ID
     let ID = uuidv4();
     //save user on context
-    if (checkData(username, timeLimit / 60, rounds, APIKey)) {
+    if (checkData(username, timeLimit / 60, rounds, APIKey, gameMap)) {
       createUser(username, ID).then((user) => {
         //create lobby
         setCustomAPIKey(APIKey);
-        createLobby(user, parseInt(rounds), parseInt(timeLimit), APIKey).then(
-          (res) => {
-            history.push(`/lobby/${res}`);
-          }
-        );
+        createLobby(
+          user,
+          parseInt(rounds),
+          parseInt(timeLimit),
+          APIKey,
+          gameMap
+        ).then((res) => {
+          history.push(`/lobby/${res}`);
+        });
       });
     }
   };
-
   return (
     <div>
-      <Modal show={open} onHide={() => handleOpen(false)} size="xs">
+      <Modal show={open} onHide={() => handleOpen(false)} size="md">
         <Modal.Header>
-          <Modal.Title>Crea Lobby</Modal.Title>
+          <Modal.Title>Create Lobby</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form autoComplete="off" fluid>
-            <FormGroup>
-              <ControlLabel>Username</ControlLabel>
-              <FormControl
-                name="username"
-                type="text"
-                value={username}
-                min={2}
-                max={25}
-                onChange={(e) => setUsername(e)}
-              />
-              <HelpBlock>Required</HelpBlock>
-            </FormGroup>
-            <FormGroup>
-              <ControlLabel>Rounds</ControlLabel>
-              <FormControl
-                name="rounds"
-                type="number"
-                value={rounds}
-                min={2}
-                max={20}
-                step={1}
-                onChange={(e) => setRounds(e)}
-              />
-              <HelpBlock>Required</HelpBlock>
-            </FormGroup>
-            <FormGroup>
-              <ControlLabel>Time Limit ( min )</ControlLabel>
-              <FormControl
-                name="time_limit"
-                type="number"
-                value={timeLimit / 60}
-                onChange={(e) => setTimeLimit(e * 60)}
-                min={1}
-                max={10}
-                step={1}
-              />
-              <HelpBlock>Required</HelpBlock>
-            </FormGroup>
-            <FormGroup>
-              <ControlLabel>
-                Google API KEY
-                <a
-                  style={{ marginLeft: "5px" }}
-                  target="_blank"
-                  rel="noreferrer"
-                  href="https://github.com/RasterCrow/Geo-Locator/wiki"
-                >
-                  <IconButton
-                    onClick={() => {}}
-                    icon={<Icon icon="info" />}
-                    circle
-                    size="md"
+            <div style={{ display: "flex", gap: "30px" }}>
+              <div style={{ width: "40%", margin: "auto" }}>
+                <FormGroup>
+                  <ControlLabel>Username</ControlLabel>
+                  <FormControl
+                    name="username"
+                    type="text"
+                    value={username}
+                    min={2}
+                    max={25}
+                    onChange={(e) => setUsername(e)}
                   />
-                </a>
-              </ControlLabel>
-              <FormControl
-                name="API_KEY"
-                type="text"
-                value={APIKey}
-                min={30}
-                max={45}
-                onChange={(e) => setAPIKey(e)}
-              />
-              <HelpBlock>Required</HelpBlock>
-            </FormGroup>
+                  <HelpBlock>Required</HelpBlock>
+                </FormGroup>
+                <FormGroup>
+                  <ControlLabel>Rounds</ControlLabel>
+                  <FormControl
+                    name="rounds"
+                    type="number"
+                    value={rounds}
+                    min={2}
+                    max={20}
+                    step={1}
+                    onChange={(e) => setRounds(e)}
+                  />
+                  <HelpBlock>Required</HelpBlock>
+                </FormGroup>
+                <FormGroup>
+                  <ControlLabel>Time Limit ( min )</ControlLabel>
+                  <FormControl
+                    name="time_limit"
+                    type="number"
+                    value={timeLimit / 60}
+                    onChange={(e) => setTimeLimit(e * 60)}
+                    min={1}
+                    max={20}
+                    step={1}
+                  />
+                  <HelpBlock>Required</HelpBlock>
+                </FormGroup>
+                <FormGroup>
+                  <ControlLabel>
+                    Google API KEY
+                    <a
+                      style={{ marginLeft: "5px" }}
+                      target="_blank"
+                      rel="noreferrer"
+                      href="https://github.com/RasterCrow/Geo-Locator/wiki"
+                    >
+                      <IconButton
+                        onClick={() => {}}
+                        icon={<Icon icon="info" />}
+                        circle
+                        size="md"
+                      />
+                    </a>
+                  </ControlLabel>
+                  <FormControl
+                    name="API_KEY"
+                    type="text"
+                    value={APIKey}
+                    min={30}
+                    max={45}
+                    onChange={(e) => setAPIKey(e)}
+                  />
+                  <HelpBlock>Required</HelpBlock>
+                </FormGroup>
+              </div>
+              <div style={{ width: "60%" }}>
+                <p
+                  style={{
+                    textAlign: "center",
+                    marginBottom: "15px",
+                    fontWeight: "bold",
+                    fontSize: "1.2em",
+                  }}
+                >
+                  Maps
+                </p>
+
+                <ButtonGroup
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    justifyContent: "space-evenly",
+                    maxHeight: "500px",
+                    gap: "10px",
+                    overflowY: "auto",
+                  }}
+                >
+                  {Object.values(gamemodes).map((gamemode) => {
+                    return (
+                      <GameModeMap
+                        selected={gameMap}
+                        title={gamemode.title}
+                        image={gamemode.image}
+                        id={gamemode.id}
+                        key={gamemode.id}
+                        selectGameMode={selectGameMode}
+                      />
+                    );
+                  })}
+                </ButtonGroup>
+              </div>
+            </div>
           </Form>
         </Modal.Body>
         <Modal.Footer>
@@ -178,7 +229,9 @@ export default function CreateLobbyModal(props) {
           </Button>
         </Modal.Footer>
       </Modal>
-      <Button onClick={() => handleOpen(true)}>Create Lobby</Button>
+      <Button style={{ fontSize: "1.3em" }} onClick={() => handleOpen(true)}>
+        Create Lobby
+      </Button>
     </div>
   );
 }

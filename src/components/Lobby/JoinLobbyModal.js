@@ -56,14 +56,13 @@ export default function JoinLobbyModal() {
 
   const [lobbyId, setLobbyId] = useState("");
   const [open, setOpen] = useState(false);
-  const [username, setUsername] = useState("gando");
+  const [username, setUsername] = useState("");
   const handleOpen = (open) => {
     setOpen(open);
   };
   const handleJoinLobby = (evt) => {
     evt.preventDefault();
     //create user
-    console.log(lobbyId);
     if (checkData(username, lobbyId)) {
       //create random ID
       let ID = uuidv4();
@@ -136,7 +135,9 @@ export default function JoinLobbyModal() {
           </Button>
         </Modal.Footer>
       </Modal>
-      <Button onClick={() => handleOpen(true)}>Join Lobby</Button>
+      <Button style={{ fontSize: "1.3em" }} onClick={() => handleOpen(true)}>
+        Join Lobby
+      </Button>
     </div>
   );
 }

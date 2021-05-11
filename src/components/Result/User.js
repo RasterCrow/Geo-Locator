@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Divider } from "rsuite";
 
 import { db } from "../../services/firebase";
 export default function User(props) {
@@ -20,14 +21,31 @@ export default function User(props) {
     });
   }, [props]);
   return userData != null ? (
-    userData.points == undefined || isNaN(userData.points) ? (
-      <p>{userData.name} is still playing.</p>
-    ) : (
-        <p>
+    <>
+      {userData.points == undefined || isNaN(userData.points) ? (
+        <p
+          style={{
+            fontSize: "1.1em",
+            fontFamily: "Montserrat",
+            margin: "5px",
+          }}
+        >
+          {userData.name} is still playing.
+        </p>
+      ) : (
+        <p
+          style={{
+            fontSize: "1.1em",
+            fontFamily: "Montserrat",
+            margin: "5px",
+          }}
+        >
           {userData.name} made {userData.points} points.
         </p>
-      )
+      )}
+      <Divider style={{ margin: "0" }} />
+    </>
   ) : (
-      <p>Loading..</p>
-    );
+    <p>Loading..</p>
+  );
 }

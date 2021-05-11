@@ -32,17 +32,23 @@ export default function Scoreboard(props) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "25px" }}>
       <div>
-        <p>
-          <b>Total</b>
-        </p>
-        <div style={{ marginTop: "10px", marginLeft: "10px" }}>
+        <div
+          style={{
+            padding: "10px",
+            borderRadius: "5px",
+            backgroundColor: "rgb(30, 32, 36)",
+            minHeight: "150px",
+            maxHeight: "500px",
+            overflowY: "auto",
+          }}
+        >
           {props.results.map((user, index) => {
             return <User lobbyId={props.lobbyId} user={user} key={index} />;
           })}
         </div>
       </div>
       <div>
-        <div style={{ maxWidth: "100%" }}>{buttons}</div>
+        <div style={{ maxWidth: "100%", overflowX: "auto" }}>{buttons}</div>
         <div style={{ marginTop: "10px", marginBottom: "15px" }}>
           <MapRoundRecapWrapper
             roundToView={roundToView}

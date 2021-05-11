@@ -6,17 +6,53 @@ import { AuthContext } from "../providers/Auth";
 import CreateUserModal from "../components/Lobby/CreateUserModal";
 import { useHistory } from "react-router-dom";
 import { createGame } from "../providers/GameProvider";
+import gamemodes from "../utilities/gamemods.json";
+import GameMapSelectorModal from "../components/Lobby/GameMapSelectorModal";
+
+function GameMapPreview({ gameMapId }) {
+  return gameMapId == null ? (
+    <p>Loading...</p>
+  ) : (
+    <div
+      style={{
+        display: "flex",
+        width: "100%",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "10px",
+      }}
+    >
+      <img
+        style={{
+          borderRadius: "8px",
+        }}
+        src={gamemodes[gameMapId].image}
+        width="230"
+        height="140"
+        alt="Game mode map location"
+      />
+      <p
+        style={{
+          fontSize: "1.1em",
+          fontFamily: "Montserrat",
+        }}
+      >
+        {gamemodes[gameMapId].title}
+      </p>
+    </div>
+  );
+}
 
 export default function GameLobby(props) {
   const [joinedUsers, setJoinedUsers] = useState([]);
   const [isHost, setIsHost] = useState(false);
   const [isAuth, setIsAuth] = useState(false);
   const [rounds, setRounds] = useState(null);
+  const [gameMapId, setGameMapId] = useState(null);
   const [timeLimit, setTimeLimit] = useState(null);
   const lobbyID = props.match.params.uid;
   const { currentUser } = useContext(AuthContext);
   const history = useHistory();
-
   useEffect(() => {
     //retrieve connected users
     if (currentUser == null) {
@@ -65,6 +101,7 @@ export default function GameLobby(props) {
           //setto rounds e timeLimit
           setRounds(data.rounds);
           setTimeLimit(data.timeLimit);
+          setGameMapId(data.gameMapId);
         } else {
           Notification["error"]({
             title: "Error",
@@ -82,7 +119,14 @@ export default function GameLobby(props) {
   const handleStartGame = () => {
     if (isHost) {
       //create game
-      createGame(joinedUsers, currentUser.uid, lobbyID, rounds, timeLimit);
+      createGame(
+        joinedUsers,
+        currentUser.uid,
+        lobbyID,
+        rounds,
+        timeLimit,
+        gameMapId
+      );
     }
   };
   const handleRoundsChange = (e) => {
@@ -91,7 +135,11 @@ export default function GameLobby(props) {
   const handleTimeLimitChange = (e) => {
     db.ref(`lobbies/${lobbyID}`).update({ timeLimit: e * 60 });
   };
-
+  const handleChangeMap = (e) => {
+    if (e != gameMapId) {
+      db.ref(`lobbies/${lobbyID}`).update({ gameMapId: e });
+    }
+  };
   return !isAuth ? (
     <CreateUserModal lobbyId={lobbyID} />
   ) : (
@@ -105,8 +153,8 @@ export default function GameLobby(props) {
     >
       <Panel
         style={{
-          minHeight: "300px",
-          width: "500px",
+          minHeight: "500px",
+          minWidth: "800px",
           backgroundColor: "#2B2E33",
         }}
         header="Lobby Setup"
@@ -114,86 +162,124 @@ export default function GameLobby(props) {
       >
         <div
           style={{
-            minHeight: "200px",
-            marginBottom: "25px",
-            backgroundColor: "rgb(30, 32, 36)",
-            borderRadius: "15px",
-            padding: "10px",
-          }}
-        >
-          {joinedUsers.length > 0 ? (
-            joinedUsers.map((singleUser) => {
-              return <User key={singleUser.uid} user={singleUser} />;
-            })
-          ) : (
-            <p>Loading...</p>
-          )}
-        </div>
-        <div
-          style={{
-            width: "100%",
             display: "flex",
-            justifyContent: "space-between",
-            paddingRight: "20px",
+            gap: "20px",
           }}
         >
-          {isHost ? (
-            <>
-              <div>
-                Rounds :{" "}
-                <InputNumber
+          <div
+            style={{
+              width: "50%",
+              minHeight: "380px",
+              backgroundColor: "rgb(30, 32, 36)",
+              borderRadius: "15px",
+              padding: "10px",
+            }}
+          >
+            {joinedUsers.length > 0 ? (
+              joinedUsers.map((singleUser) => {
+                return <User key={singleUser.uid} user={singleUser} />;
+              })
+            ) : (
+              <p>Loading...</p>
+            )}
+          </div>
+          <div
+            style={{
+              width: "50%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-evenly",
+            }}
+          >
+            <GameMapPreview gameMapId={gameMapId} />
+            {isHost ? (
+              <>
+                <div
                   style={{
-                    width: "80px",
                     marginTop: "10px",
                     marginBottom: "10px",
                   }}
-                  value={rounds}
-                  onChange={(e) => handleRoundsChange(e)}
-                  min={2}
-                  max={20}
-                  step={1}
-                />
-                Time limit per round:{" "}
-                <InputNumber
+                >
+                  Rounds :{" "}
+                  <InputNumber
+                    style={{
+                      display: "inline-flex",
+                      width: "80px",
+                      marginLeft: "5px",
+                    }}
+                    value={rounds}
+                    onChange={(e) => handleRoundsChange(e)}
+                    min={2}
+                    max={20}
+                    step={1}
+                  />
+                </div>
+
+                <div
                   style={{
-                    width: "80px",
                     marginTop: "10px",
                     marginBottom: "10px",
                   }}
-                  value={timeLimit}
-                  onChange={(e) => handleTimeLimitChange(e)}
-                  value={timeLimit / 60}
-                  min={1}
-                  max={10}
-                  step={1}
-                />
-                minutes
-              </div>
-              <Button
-                style={{ height: "40px", alignSelf: "center" }}
-                appearance="primary"
-                onClick={handleStartGame}
-              >
-                Start Game
-              </Button>
-            </>
-          ) : (
-            <>
-              <div>
-                Rounds : {rounds}
-                <br />
-                Time limit per round: {timeLimit / 60} minutes
-              </div>
-              <Button
-                style={{ height: "40px" }}
-                disabled
-                appearance="primary"
-                onClick={handleStartGame}
-              >
-                Start Game
-              </Button>
-            </>
-          )}
+                >
+                  Time limit per round:{" "}
+                  <InputNumber
+                    style={{
+                      display: "inline-flex",
+                      width: "80px",
+                      marginLeft: "5px",
+                      marginRight: "5px",
+                    }}
+                    onChange={(e) => handleTimeLimitChange(e)}
+                    value={timeLimit / 60}
+                    min={1}
+                    max={20}
+                    step={1}
+                  />
+                  minutes
+                </div>
+                <div
+                  style={{ display: "flex", justifyContent: "space-evenly" }}
+                >
+                  <GameMapSelectorModal
+                    currentMap={gameMapId}
+                    handleChangeMap={handleChangeMap}
+                    gamemodes={gamemodes}
+                  />
+                  <Button
+                    style={{ height: "40px" }}
+                    appearance="primary"
+                    color="green"
+                    onClick={handleStartGame}
+                  >
+                    Start Game
+                  </Button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div style={{ fontSize: "1.2em" }}>
+                  Rounds : {rounds}
+                  <br />
+                  Time limit per round: {timeLimit / 60} minutes
+                </div>
+                <div
+                  style={{ display: "flex", justifyContent: "space-evenly" }}
+                >
+                  <Button disabled color="yellow">
+                    Change Map
+                  </Button>
+                  <Button
+                    style={{ height: "40px" }}
+                    disabled
+                    color="green"
+                    onClick={handleStartGame}
+                  >
+                    Start Game
+                  </Button>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </Panel>
     </div>

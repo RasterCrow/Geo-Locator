@@ -29,9 +29,8 @@ function deg2rad(deg) {
 
 export default function GamePage(props) {
   const { currentUser } = useContext(AuthContext);
-  const { setLocationGuessed, lonGuessed, latGuessed } = useContext(
-    GameContext
-  );
+  const { setLocationGuessed, lonGuessed, latGuessed } =
+    useContext(GameContext);
 
   const history = useHistory();
   const lobbyID = props.match.params.uid;
@@ -144,9 +143,7 @@ export default function GamePage(props) {
 
   const handleEndRound = () => {
     setIsGameStarted(false);
-    // setCurrentRound(currentRound + 1);
-    // setLocationGuessed(0, 0);
-    // setCurrentTime(timeLimit);
+
     //calculate points
     getDistanceFromLatLonInKm(
       parseFloat(latGuessed),
@@ -157,27 +154,29 @@ export default function GamePage(props) {
       .then((res) => {
         let distance = parseInt(res);
         let points = 0;
-        //TODO Implementare time influenza valore
         let timeToAnswer = timeLimit - currentTime;
-
         if (distance <= 2) {
-          points = 1000;
-        } else if (distance <= 5 && distance > 2) {
-          points = 850;
-        } else if (distance <= 25 && distance > 5) {
-          points = 700;
-        } else if (distance <= 100 && distance > 25) {
-          points = 500;
-        } else if (distance <= 500 && distance > 100) {
-          points = 350;
-        } else if (distance <= 2500 && distance > 500) {
-          points = 200;
-        } else if (distance <= 7000 && distance > 2500) {
           points = 100;
+        } else if (distance <= 5 && distance > 2) {
+          points = 90;
+        } else if (distance <= 20 && distance > 5) {
+          points = 85;
+        } else if (distance <= 50 && distance > 20) {
+          points = 70;
+        } else if (distance <= 100 && distance > 50) {
+          points = 50;
+        } else if (distance <= 500 && distance > 100) {
+          points = 35;
+        } else if (distance <= 2500 && distance > 500) {
+          points = 20;
+        } else if (distance <= 7000 && distance > 2500) {
+          points = 10;
         } else if (distance > 7000) {
           points = 1;
         }
 
+        points = points - parseInt(((timeToAnswer / timeLimit) * 100) / 5);
+        if (points < 0) points = 1;
         //set current data on db
         addGuessedLoc(
           currentUser.uid,
@@ -238,43 +237,84 @@ export default function GamePage(props) {
             {/*  Game Utilities */}
             <div
               style={{
-                padding: "10px",
-                borderRadius: "10px",
                 border: "1px solid black",
-                backgroundColor: "rgba(255,255,255,0.4)",
-                width: "10%",
+                backgroundColor: "rgba(255,255,255,0.8)",
+                width: "400px",
+                height: "50px",
+                alignItems: "center",
                 position: "absolute",
-                bottom: "330px",
-                right: "1%",
+                top: "5vh",
+                right: "0",
+                borderRadius: "0 0  0 10px",
                 zIndex: "2",
                 display: "flex",
-                flexDirection: "column",
+                justifyContent: "space-evenly",
                 gap: "5px",
               }}
             >
-              <div
+              <p
                 style={{
-                  fontSize: "1.3rem",
-                  fontFamily: "Roboto",
+                  paddingLeft: "10px",
+                  width: "40%",
+                  fontSize: "1.2rem",
+                  fontFamily: "Montserrat",
                   WebkitTextStroke: "1px rgba(0,0,0,0.5)",
-                  color: "rgb(22, 82, 240)",
+                  color: "#4D96E5",
                 }}
               >
-                <p> Round : {currentRound}</p>
-                <p> Time remaining : {currentTime}</p>
-              </div>
-
+                {" "}
+                Round :{" "}
+                <span style={{ display: "inline", color: "#FF2F12" }}>
+                  {currentRound}
+                </span>
+              </p>
+              <p
+                style={{
+                  paddingRight: "10px",
+                  width: "60%",
+                  marginTop: "0px",
+                  fontSize: "1.2rem",
+                  fontFamily: "Montserrat",
+                  WebkitTextStroke: "1px rgba(0,0,0,0.5)",
+                  color: "#4D96E5",
+                }}
+              >
+                {" "}
+                Time remaining :{" "}
+                <span style={{ display: "inline", color: "#FF2F12" }}>
+                  {currentTime}
+                </span>
+              </p>
+            </div>
+            <div
+              style={{
+                zIndex: "2",
+                position: "absolute",
+                right: "15px",
+                bottom: "330px",
+              }}
+            >
               {currentRound == rounds ? (
-                <Button style={{ marginTop: "5px" }} onClick={handleEndRound}>
+                <Button
+                  style={{ fontSize: "1.5em", marginTop: "5px" }}
+                  color="red"
+                  onClick={handleEndRound}
+                >
                   Finish Game
                 </Button>
               ) : (
-                <Button style={{ marginTop: "5px" }} onClick={handleEndRound}>
+                <Button
+                  style={{
+                    fontSize: "1.5em",
+                    marginTop: "5px",
+                  }}
+                  color="blue"
+                  onClick={handleEndRound}
+                >
                   Next Round
                 </Button>
               )}
             </div>
-
             {
               <MapWrapper
                 lat={gameData[currentRound - 1].lat}

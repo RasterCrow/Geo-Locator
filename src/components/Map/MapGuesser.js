@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from "react";
-
+import "./MapGuesser.css";
 import { GameContext } from "../../providers/GameProvider";
 
 export default function MapGuesser(props) {
@@ -50,7 +50,11 @@ export default function MapGuesser(props) {
 
   return (
     <div
-      style={{ width: "100%", height: "100%", marginRight: "100px" }}
+      style={{
+        width: "100%",
+        height: "100%",
+        borderRadius: "10px",
+      }}
       id="miniMap"
     />
   );

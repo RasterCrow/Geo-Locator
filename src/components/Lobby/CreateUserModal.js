@@ -11,7 +11,12 @@ import {
   Notification,
 } from "rsuite";
 import { AuthContext } from "../../providers/Auth";
-import { joinLobby, checkLobbyExist } from "../../providers/GameProvider";
+import {
+  joinLobby,
+  checkLobbyExist,
+  getLobbyAPIKey,
+  GameContext,
+} from "../../providers/GameProvider";
 import { useHistory } from "react-router-dom";
 
 function uuidv4() {
@@ -36,6 +41,8 @@ function checkData(username) {
 
 export default function CreateUserModal(props) {
   const { createUser } = useContext(AuthContext);
+
+  const { setCustomAPIKey } = useContext(GameContext);
   const history = useHistory();
   const [open, setOpen] = useState(true);
 
@@ -51,9 +58,12 @@ export default function CreateUserModal(props) {
 
       checkLobbyExist(props.lobbyId).then((res) => {
         if (res == 1) {
-          createUser(username, ID).then((user) => {
-            //let user join lobby
-            joinLobby(user, props.lobbyId);
+          getLobbyAPIKey(props.lobbyId).then((res) => {
+            setCustomAPIKey(res);
+            createUser(username, ID).then((user) => {
+              //let user join lobby
+              joinLobby(user, props.lobbyId);
+            });
           });
         } else if (res == 2) {
           Notification["error"]({

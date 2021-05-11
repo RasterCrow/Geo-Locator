@@ -115,7 +115,7 @@ export default function MapRoundRecapLeaflet(props) {
 
   return (
     <MapContainer
-      style={{ width: "100%", height: "100%" }}
+      style={{ width: "100%", height: "100%", borderRadius: "10px" }}
       center={center}
       zoom={3}
     >

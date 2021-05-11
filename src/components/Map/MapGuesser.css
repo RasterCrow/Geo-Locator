@@ -1,0 +1,6 @@
+#miniMap {
+  transition: all 0.2s ease-in-out;
+}
+#miniMap:hover {
+  transform: scale(1.05);
+}
