@@ -234,13 +234,16 @@ export default function GamePage(props) {
                 height: "50px",
                 alignItems: "center",
                 position: "absolute",
-                top: "5vh",
+                top: "60px",
+
+                minTop: "50px",
                 right: "0",
                 borderRadius: "0 0  0 10px",
                 zIndex: "2",
                 display: "flex",
                 justifyContent: "space-evenly",
                 gap: "5px",
+                boxShadow: "0px 0px 10px -2px black",
               }}
             >
               <p
@@ -287,7 +290,11 @@ export default function GamePage(props) {
             >
               {currentRound == rounds ? (
                 <Button
-                  style={{ fontSize: "1.5em", marginTop: "5px" }}
+                  style={{
+                    fontSize: "1.5em",
+                    marginTop: "5px",
+                    boxShadow: "0px 3px 10px  black",
+                  }}
                   color="red"
                   onClick={handleEndRound}
                 >
@@ -298,6 +305,7 @@ export default function GamePage(props) {
                   style={{
                     fontSize: "1.5em",
                     marginTop: "5px",
+                    boxShadow: "0px 3px 10px  black",
                   }}
                   color="blue"
                   onClick={handleEndRound}

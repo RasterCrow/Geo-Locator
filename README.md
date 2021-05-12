@@ -10,22 +10,25 @@ Geoguessr clone made with React and Firebase Real Time Database, Firebase Hostin
 
 If you sometimes feel like playing Geoguessr with your friends, but don't want to pay the monthly fee, Geo Locator can help you.
 
-It's still WIP , still have some work to do on perfomance improvements ( especially to reduce map loads from the Google Maps API ), but it works and for my use it's ok as it is.
+It's still WIP , still have some work to do on perfomance improvements, but it works and for my use it's ok as it is.
 
 You can now play it without hosting it [here](https://geolocator.rastercrow.me/). If you need some help visit the [Wiki](https://github.com/RasterCrow/Geo-Locator/wiki).
 
-You can also add your own locations by going to _src/providers/GameProvider.js_ and add your Latitude and Longitude to the LOCATIONS array at the end of the file.
+You can also add your own locations by going to _src/utilities/locations.json_ and add your Latitude and Longitude of the the location you want to add to the correct array (based on the ids from gamemodes.json in the same directory).
 
 # Images
 
-Lobby Menu 
-![Lobby functionality menu](https://github.com/RasterCrow/Geo-Locator/blob/master/GithubAssets/image2.png?raw=true)
+Create Lobby Interface
+![Create Lobby functionality menu](https://github.com/RasterCrow/Geo-Locator/blob/master/GithubAssets/image2.png?raw=true)
+
+Lobby Interface 
+![Lobby Interface](https://github.com/RasterCrow/Geo-Locator/blob/master/GithubAssets/image2,5.png?raw=true)
 
 Game Interface
 ![Game interface](https://github.com/RasterCrow/Geo-Locator/blob/master/GithubAssets/image3.jpg?raw=true)
 
-Game Recap Menu
-![Game Recap](https://github.com/RasterCrow/Geo-Locator/blob/master/GithubAssets/image4.png?raw=true)
+Results Screen Interface
+![Results Screen](https://github.com/RasterCrow/Geo-Locator/blob/master/GithubAssets/image4.png?raw=true)
 
 # License
 

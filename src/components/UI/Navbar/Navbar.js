@@ -4,6 +4,7 @@ export default function CustomNavbar(props) {
   return (
     <Navbar
       style={{
+        height: "60px",
         width: "100%",
       }}
     >
