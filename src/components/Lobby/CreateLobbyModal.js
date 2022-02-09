@@ -12,6 +12,7 @@ import {
   IconButton,
   Icon,
   ButtonGroup,
+  Toggle 
 } from "rsuite";
 import { useHistory } from "react-router-dom";
 import { createLobby, GameContext } from "../../providers/GameProvider";
@@ -51,7 +52,7 @@ function checkData(username, timeLimit, rounds, APIKey, gameMap) {
     return false;
   }
   //check if api key was inserted
-  if (APIKey == undefined || APIKey.length < 10) {
+  if (APIKey === undefined || APIKey.length < 10) {
     Notification["warning"]({
       title: "Warning",
       description: "You must insert a valid API Key.",
@@ -70,11 +71,11 @@ export default function CreateLobbyModal(props) {
   const [open, setOpen] = useState(false);
   const [rounds, setRounds] = useState(5);
   const [username, setUsername] = useState("");
-  const [APIKey, setAPIKey] = useState(
-    "AIzaSyCCDLxCalH5m6iRxdyz9QyN1cRiGhUJ-K4"
-  );
+  const [APIKey, setAPIKey] = useState("");
   const [gameMap, setGameMap] = useState("07");
-
+  
+  const [defaultApiToggle, setDefaultApiToggle] = useState(true);
+  
   const handleOpen = (open) => {
     setOpen(open);
   };
@@ -83,21 +84,26 @@ export default function CreateLobbyModal(props) {
     setGameMap(id);
   };
 
+
   const handleCreateLobby = (evt) => {
     evt.preventDefault();
     //create user
     //create random ID
     let ID = uuidv4();
     //save user on context
-    if (checkData(username, timeLimit / 60, rounds, APIKey, gameMap)) {
+    let keyToUse = '';
+    if(defaultApiToggle) 
+    keyToUse= 'AIzaSyCCDLxCalH5m6iRxdyz9QyN1cRiGhUJ-K4';
+    else keyToUse= APIKey;
+    if (checkData(username, timeLimit / 60, rounds, keyToUse, gameMap)) {
       createUser(username, ID).then((user) => {
         //create lobby
-        setCustomAPIKey(APIKey);
+        setCustomAPIKey(keyToUse);
         createLobby(
           user,
           parseInt(rounds),
           parseInt(timeLimit),
-          APIKey,
+          keyToUse,
           gameMap
         ).then((res) => {
           history.push(`/lobby/${res}`);
@@ -170,6 +176,21 @@ export default function CreateLobbyModal(props) {
                       />
                     </a>
                   </ControlLabel>
+                  
+                  <p
+                  style={{
+                   display : 'flex',
+                   gap:'15px',
+                   marginLeft:'10px',
+                   marginBottom : '10px'
+                  }}
+                >
+                Use free API Key 
+                  <Toggle checked={defaultApiToggle} onChange={(checked)=> setDefaultApiToggle(checked)}/>
+                  </p>
+                  
+                  {!defaultApiToggle &&
+                  <>
                   <FormControl
                     name="API_KEY"
                     type="text"
@@ -178,7 +199,8 @@ export default function CreateLobbyModal(props) {
                     max={45}
                     onChange={(e) => setAPIKey(e)}
                   />
-                  <HelpBlock>Required</HelpBlock>
+                   <HelpBlock>Required</HelpBlock></>
+                  }
                 </FormGroup>
               </div>
               <div style={{ width: "60%" }}>

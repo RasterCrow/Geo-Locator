@@ -2,7 +2,31 @@
   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
           
                       <url>
-                          <loc>https://geolocator.rastercrow.me/</loc>
+                          <loc>https://rastercrow.me//blog</loc>
+                      </url>
+                  
+                      <url>
+                          <loc>https://rastercrow.me/</loc>
+                      </url>
+                  
+                      <url>
+                          <loc>https://rastercrow.me/posts/changes-to-the-site</loc>
+                      </url>
+                  
+                      <url>
+                          <loc>https://rastercrow.me/posts/death-stranding's-photo-mode</loc>
+                      </url>
+                  
+                      <url>
+                          <loc>https://rastercrow.me/posts/Games-I-played-in-2021</loc>
+                      </url>
+                  
+                      <url>
+                          <loc>https://rastercrow.me/posts/Geo-Locator,-a-Geoguessr-clone</loc>
+                      </url>
+                  
+                      <url>
+                          <loc>https://rastercrow.me/posts/introductions</loc>
                       </url>
                   
       </urlset>
