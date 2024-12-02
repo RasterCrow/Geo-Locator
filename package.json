@@ -16,7 +16,7 @@
     "react-google-streetview": "0.0.9",
     "react-leaflet": "^3.0.5",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.1",
+    "react-scripts": "5.0.1",
     "rsuite": "^4.8.6",
     "socket.io-client": "^3.0.5",
     "use-sound": "^2.0.1",
