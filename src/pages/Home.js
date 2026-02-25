@@ -108,7 +108,7 @@ export default function Home() {
           }}
         >
           Made with 💖 by{" "}
-          <a href="https://rastercrow.me/" target="__noBlank">
+          <a href="https://alexcrow.dev/" target="__noBlank">
             {" "}
             RasterCrow{" "}
           </a>

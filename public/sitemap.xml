@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-          
+
                       <url>
-                          <loc>https://rastercrow.me//blog</loc>
+                          <loc>https://alexcrow.dev//blog</loc>
                       </url>
-                  
+
                       <url>
-                          <loc>https://rastercrow.me/</loc>
+                          <loc>https://alexcrow.dev/</loc>
                       </url>
-                  
+
                       <url>
-                          <loc>https://rastercrow.me/posts/changes-to-the-site</loc>
+                          <loc>https://alexcrow.dev/posts/changes-to-the-site</loc>
                       </url>
-                  
+
                       <url>
-                          <loc>https://rastercrow.me/posts/death-stranding's-photo-mode</loc>
+                          <loc>https://alexcrow.dev/posts/death-stranding's-photo-mode</loc>
                       </url>
-                  
+
                       <url>
-                          <loc>https://rastercrow.me/posts/Games-I-played-in-2021</loc>
+                          <loc>https://alexcrow.dev/posts/Games-I-played-in-2021</loc>
                       </url>
-                  
+
                       <url>
-                          <loc>https://rastercrow.me/posts/Geo-Locator,-a-Geoguessr-clone</loc>
+                          <loc>https://alexcrow.dev/posts/Geo-Locator,-a-Geoguessr-clone</loc>
                       </url>
-                  
+
                       <url>
-                          <loc>https://rastercrow.me/posts/introductions</loc>
+                          <loc>https://alexcrow.dev/posts/introductions</loc>
                       </url>
-                  
+
       </urlset>

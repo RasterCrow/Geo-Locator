@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: https://geolocator.rastercrow.me/sitemap.xml
+Sitemap: https://geolocator.alexcrow.dev/sitemap.xml
