@@ -16,21 +16,12 @@ function App() {
     <div className="App">
       <BrowserRouter>
         {isLoading ? (
-          <Loader size="lg" content="Large" center content="Loading..." />
+          <Loader size="lg" content="Large" center />
         ) : (
           <div style={{ display: "flex", flexDirection: "column" }}>
             <CustomNavbar />
             <div style={{ height: "94vh" }}>
-              <Suspense
-                fallback={
-                  <Loader
-                    size="lg"
-                    content="Large"
-                    center
-                    content="Loading..."
-                  />
-                }
-              >
+              <Suspense fallback={<Loader size="lg" content="Large" center />}>
                 <Switch>
                   <Route exact path="/" component={Home}></Route>
 

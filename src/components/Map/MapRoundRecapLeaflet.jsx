@@ -9,8 +9,8 @@ import {
 import L from "leaflet";
 
 const iconCorrect = new L.Icon({
-  iconUrl: process.env.PUBLIC_URL + "/assets/marker_correct.svg",
-  iconRetinaUrl: process.env.PUBLIC_URL + "/assets/marker_correct.svg",
+  iconUrl: "/assets/marker_correct.svg",
+  iconRetinaUrl: "/assets/marker_correct.svg",
   iconAnchor: null,
   popupAnchor: null,
   shadowUrl: null,
@@ -21,8 +21,8 @@ const iconCorrect = new L.Icon({
 });
 
 const iconUserGuess = new L.Icon({
-  iconUrl: process.env.PUBLIC_URL + "/assets/marker_user.svg",
-  iconRetinaUrl: process.env.PUBLIC_URL + "/assets/marker_user.svg",
+  iconUrl: "/assets/marker_user.svg",
+  iconRetinaUrl: "/assets/marker_user.svg",
   iconAnchor: null,
   popupAnchor: null,
   tooltipAnchor: new L.Point(20, 0),
