@@ -5,7 +5,7 @@ import ReactDependentScript from "react-dependent-script";
 import MapRoundRecap from "./MapRoundRecap";
 import MapRoundRecapLeaflet from "./MapRoundRecapLeaflet";
 
-const apiKey = process.env.REACT_APP_API_KEY;
+const apiKey = import.meta.env.VITE_API_KEY;
 
 export default function MapRoundRecapWrapper(props) {
   return (

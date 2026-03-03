@@ -12,19 +12,27 @@ import {
   IconButton,
   Icon,
   ButtonGroup,
-  Toggle 
+  Toggle,
 } from "rsuite";
 import { useHistory } from "react-router-dom";
 import { createLobby, GameContext } from "../../providers/GameProvider";
 import { AuthContext } from "../../providers/Auth";
 import gamemodes from "../../utilities/gamemods.json";
 import GameModeMap from "./GameModeMap";
+import { Tooltip, Whisper } from "rsuite";
+
+const tooltip = (
+  <Tooltip>
+    Free API key is deprecated. Click the info icon for more details.
+  </Tooltip>
+);
+
 function uuidv4() {
   return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
     (
       c ^
       (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
-    ).toString(16)
+    ).toString(16),
   );
 }
 
@@ -73,9 +81,9 @@ export default function CreateLobbyModal(props) {
   const [username, setUsername] = useState("");
   const [APIKey, setAPIKey] = useState("");
   const [gameMap, setGameMap] = useState("07");
-  
-  const [defaultApiToggle, setDefaultApiToggle] = useState(true);
-  
+
+  const [defaultApiToggle, setDefaultApiToggle] = useState(false);
+
   const handleOpen = (open) => {
     setOpen(open);
   };
@@ -84,17 +92,15 @@ export default function CreateLobbyModal(props) {
     setGameMap(id);
   };
 
-
   const handleCreateLobby = (evt) => {
     evt.preventDefault();
     //create user
     //create random ID
     let ID = uuidv4();
     //save user on context
-    let keyToUse = '';
-    if(defaultApiToggle) 
-    keyToUse= 'AIzaSyCCDLxCalH5m6iRxdyz9QyN1cRiGhUJ-K4';
-    else keyToUse= APIKey;
+    let keyToUse = "";
+    if (defaultApiToggle) keyToUse = "AIzaSyCCDLxCalH5m6iRxdyz9QyN1cRiGhUJ-K4";
+    else keyToUse = APIKey;
     if (checkData(username, timeLimit / 60, rounds, keyToUse, gameMap)) {
       createUser(username, ID).then((user) => {
         //create lobby
@@ -104,7 +110,7 @@ export default function CreateLobbyModal(props) {
           parseInt(rounds),
           parseInt(timeLimit),
           keyToUse,
-          gameMap
+          gameMap,
         ).then((res) => {
           history.push(`/lobby/${res}`);
         });
@@ -162,45 +168,59 @@ export default function CreateLobbyModal(props) {
                 <FormGroup>
                   <ControlLabel>
                     Google API KEY
-                    <a
-                      style={{ marginLeft: "5px" }}
-                      target="_blank"
-                      rel="noreferrer"
-                      href="https://github.com/RasterCrow/Geo-Locator/wiki"
+                    <Whisper
+                      placement="top"
+                      controlId="control-id-hover"
+                      trigger="hover"
+                      speaker={tooltip}
                     >
-                      <IconButton
-                        onClick={() => {}}
-                        icon={<Icon icon="info" />}
-                        circle
-                        size="md"
-                      />
-                    </a>
+                      <a
+                        style={{ marginLeft: "5px" }}
+                        target="_blank"
+                        rel="noreferrer"
+                        href="https://github.com/RasterCrow/Geo-Locator/wiki"
+                      >
+                        <IconButton
+                          onClick={() => {}}
+                          icon={<Icon icon="info" />}
+                          circle
+                          size="md"
+                        />
+                      </a>
+                    </Whisper>
                   </ControlLabel>
-                  
+
                   <p
-                  style={{
-                   display : 'flex',
-                   gap:'15px',
-                   marginLeft:'10px',
-                   marginBottom : '10px'
-                  }}
-                >
-                Use free API Key 
-                  <Toggle checked={defaultApiToggle} onChange={(checked)=> setDefaultApiToggle(checked)}/>
+                    style={{
+                      display: "flex",
+                      gap: "15px",
+                      marginBottom: "10px",
+                      justifyItems: "center",
+                      alignItems: "center",
+                      color: "#999",
+                    }}
+                  >
+                    Use free API Key
+                    <Toggle
+                      disabled
+                      checked={defaultApiToggle}
+                      onChange={(checked) => setDefaultApiToggle(checked)}
+                    />
                   </p>
-                  
-                  {!defaultApiToggle &&
-                  <>
-                  <FormControl
-                    name="API_KEY"
-                    type="text"
-                    value={APIKey}
-                    min={30}
-                    max={45}
-                    onChange={(e) => setAPIKey(e)}
-                  />
-                   <HelpBlock>Required</HelpBlock></>
-                  }
+
+                  {!defaultApiToggle && (
+                    <>
+                      <FormControl
+                        name="API_KEY"
+                        type="text"
+                        value={APIKey}
+                        min={30}
+                        max={45}
+                        onChange={(e) => setAPIKey(e)}
+                      />
+                      <HelpBlock>Required</HelpBlock>
+                    </>
+                  )}
                 </FormGroup>
               </div>
               <div style={{ width: "60%" }}>
@@ -244,11 +264,11 @@ export default function CreateLobbyModal(props) {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button appearance="primary" onClick={handleCreateLobby}>
-            Create
-          </Button>
           <Button onClick={() => handleOpen(false)} appearance="subtle">
             Cancel
+          </Button>
+          <Button appearance="primary" onClick={handleCreateLobby}>
+            Create
           </Button>
         </Modal.Footer>
       </Modal>

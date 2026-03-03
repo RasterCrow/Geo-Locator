@@ -43,10 +43,7 @@ export default function GamePage(props) {
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [isGameFinished, setIsGameFinished] = useState(false);
 
-  const [playTick] = useSound(
-    process.env.PUBLIC_URL + "/assets/sounds/tick.wav",
-    { volume: 0.25 }
-  );
+  const [playTick] = useSound("/assets/sounds/tick.wav", { volume: 0.25 });
 
   useEffect(() => {
     //check if game exists
@@ -140,7 +137,7 @@ export default function GamePage(props) {
       parseFloat(latGuessed),
       parseFloat(lonGuessed),
       parseFloat(gameData[currentRound - 1].lat),
-      parseFloat(gameData[currentRound - 1].lon)
+      parseFloat(gameData[currentRound - 1].lon),
     )
       .then((res) => {
         let distance = parseInt(res);
@@ -176,7 +173,7 @@ export default function GamePage(props) {
           currentRound,
           latGuessed,
           lonGuessed,
-          points
+          points,
         );
       })
       .then(() => {

@@ -20,7 +20,7 @@ export default function Home() {
         id="header"
         style={{
           display: "flex",
-          backgroundImage: `url('${process.env.PUBLIC_URL}/assets/home_banner.jpg')`,
+          backgroundImage: `url('/assets/home_banner.jpg')`,
           backgroundPosition: "center",
           backgroundSize: "cover",
           width: "100%",
