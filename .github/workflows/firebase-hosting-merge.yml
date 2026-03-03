@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: npm ci && npm run build
+      - run: npm ci --legacy-peer-deps && npm run build
         env:
           CI: false
           VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
