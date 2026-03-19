@@ -17,7 +17,7 @@
     "react-leaflet": "^3.0.5",
     "react-router-dom": "^5.2.0",
     "rsuite": "^4.8.6",
-    "socket.io-client": "^3.0.5",
+    "socket.io-client": "^4.8.3",
     "use-sound": "^2.0.1",
     "web-vitals": "^0.2.4"
   },
